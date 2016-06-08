@@ -12,8 +12,6 @@ const analyticsType = 'endpoint';
 
 export default utils.extend(adapter(
   {
-    // A `url` only indicates this adapter is using an analytics endpoint rather than
-    // a library.
     url,
     analyticsType
   }

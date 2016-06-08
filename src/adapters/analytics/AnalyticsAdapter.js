@@ -9,6 +9,8 @@ const BID_REQUESTED = CONSTANTS.EVENTS.BID_REQUESTED;
 const BID_TIMEOUT = CONSTANTS.EVENTS.BID_TIMEOUT;
 const BID_RESPONSE = CONSTANTS.EVENTS.BID_RESPONSE;
 const BID_WON = CONSTANTS.EVENTS.BID_WON;
+const BID_ADJUSTMENT = CONSTANTS.EVENTS.BID_ADJUSTMENT;
+
 const LIBRARY = 'library';
 const ENDPOINT = 'endpoint';
 
@@ -31,7 +33,10 @@ export default function AnalyticsAdapter({ url, analyticsType, global, handler }
     track: _track,
     enqueue: _enqueue,
     enableAnalytics: _enable,
-    getAdapterType: () => analyticsType
+    getAdapterType: () => analyticsType,
+    getGlobal: () => global,
+    getHandler: () => handler,
+    getUrl: () => url
   };
 
   function _track({ eventType, args }) {
@@ -86,6 +91,7 @@ export default function AnalyticsAdapter({ url, analyticsType, global, handler }
     events.on(BID_RESPONSE, args => this.enqueue({ eventType: BID_RESPONSE, args }));
     events.on(BID_TIMEOUT, args => this.enqueue({ eventType: BID_TIMEOUT, args }));
     events.on(BID_WON, args => this.enqueue({ eventType: BID_WON, args }));
+    events.on(BID_ADJUSTMENT, args => this.enqueue({ eventType: BID_ADJUSTMENT, args }));
 
     // finally set this function to return log message, prevents multiple adapter listeners
     this.enableAnalytics = function _enable() {
@@ -104,7 +110,6 @@ export default function AnalyticsAdapter({ url, analyticsType, global, handler }
         fn();
       };
 
-      //turn check into NOOP
       _enableCheck = false;
     }
 

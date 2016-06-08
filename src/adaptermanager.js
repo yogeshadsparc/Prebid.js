@@ -25,7 +25,7 @@ function getBids({ bidderCode, requestId, bidderRequestId, adUnits }) {
   }).reduce(flatten, []);
 }
 
-exports.callBids = ({ adUnits }) => {
+exports.callBids = ({ adUnits, cbTimeout }) => {
   const requestId = utils.getUniqueIdentifierStr();
 
   getBidderCodes(adUnits).forEach(bidderCode => {
@@ -37,7 +37,8 @@ exports.callBids = ({ adUnits }) => {
         requestId,
         bidderRequestId,
         bids: getBids({ bidderCode, requestId, bidderRequestId, adUnits }),
-        start: new Date().getTime()
+        start: new Date().getTime(),
+        timeout: cbTimeout
       };
       utils.logMessage(`CALLING BIDDER ======= ${bidderCode}`);
       pbjs._bidsRequested.push(bidderRequest);
